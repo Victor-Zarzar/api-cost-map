@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     DEBUG: bool
     APP_NAME: str
 
+    # Auth
+    SECRET_KEY: str
+
     # MySQL
     MYSQL_ROOT_PASSWORD: str
     MYSQL_DATABASE: str
