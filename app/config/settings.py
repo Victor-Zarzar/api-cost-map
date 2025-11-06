@@ -21,6 +21,11 @@ class Settings(BaseSettings):
     # Auth
     SECRET_KEY: str
 
+    # Rate Limiting
+    ENABLE_RATE_LIMITER: bool = False
+    RATE_LIMIT_REQUESTS: int
+    RATE_LIMIT_WINDOW: int
+
     # MySQL
     MYSQL_ROOT_PASSWORD: str
     MYSQL_DATABASE: str
