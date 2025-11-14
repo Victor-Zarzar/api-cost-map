@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.costs import Cost
-from app.api.schemas.costs import CostOfLivingCreate
+from app.schemas.costs import CostOfLivingCreate
 
 
 def create_cost(db: Session, payload: CostOfLivingCreate) -> Cost:

@@ -18,8 +18,18 @@ class Settings(BaseSettings):
     DEBUG: bool
     APP_NAME: str
 
-    # Auth
+    # Auth/JWT
     SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+    TOKEN_URL: str
+
+    # Admin seed
+    ADMIN_USERNAME: str
+    ADMIN_PASSWORD: str
+    ADMIN_FULL_NAME: str
+    ADMIN_EMAIL: str
+    ADMIN_DISABLED: bool = False
 
     # Rate Limiting
     ENABLE_RATE_LIMITER: bool = False
@@ -35,6 +45,7 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str
     DATABASE_HOST: str
+    DATABASE_PORT: int
     DATABASE_NAME: str
     DATABASE_USER: str
     DATABASE_PASS: str

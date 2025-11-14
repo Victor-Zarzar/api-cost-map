@@ -1,40 +1,48 @@
 # Makefile API Cost Map
-DOCKER_IMAGE_NAME = api-cost-map
-DOCKER_CONTAINER_NAME = cost-map-api
+DOCKER_IMAGE_NAME = api-cost-map-web
+DOCKER_CONTAINER_NAME = api-cost-map
 PORT = 8000
 DEV_COMPOSE = docker-compose.dev.yaml
+PROD_COMPOSE = docker-compose.prod.yaml
+DB_CONTAINER_NAME = mysql-server
+DB_PORT = 3306
+DB_NAME = costdb
+DB_USER = admin
+DB_PASS = pass
 
 
 build-dev:
-	@echo "Building development image dev..."
+	chmod +x entrypoint.sh
 	docker compose -f $(DEV_COMPOSE) build
 
 up-dev:
-	@echo "Uploading development environment on port $(PORT)..."
-	docker compose -f $(DEV_COMPOSE) up	
+	docker compose -f $(DEV_COMPOSE) up
 
 down-dev:
-	@echo "Stopping server..."
 	docker compose -f $(DEV_COMPOSE) down
-	@echo "Server stopped."
 
 logs-dev:
-	@echo "Development environment logs..."
 	docker compose -f $(DEV_COMPOSE) logs -f	
 
 test:
-	@echo "Running tests..."
 	docker compose -f $(DEV_COMPOSE) exec web pytest
-	@echo "Tests completed."
+
+shell:
+	docker exec -it ${DOCKER_CONTAINER_NAME} /bin/bash
+
+migrate:
+	docker exec -it $(DOCKER_CONTAINER_NAME) python -m alembic upgrade head
+
+access-db-local:
+	docker exec -it $(DB_CONTAINER_NAME) mysql -u $(DB_USER) -p $(DB_NAME)	
 
 clean:
-	@echo "Cleaning local environment..."
-	@docker compose -f $(DEV_COMPOSE) down -v --remove-orphans 2>/dev/null || true
-	@docker compose -f $(PROD_COMPOSE) down -v --remove-orphans 2>/dev/null || true
-	@docker images -q "api-cost-map*" | xargs -r docker rmi -f 2>/dev/null || true
-	@docker system prune -f --volumes 2>/dev/null || true
-	@docker builder prune -f 2>/dev/null || true
-	@find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
-	@find . -name "*.pyc" -type f -delete 2>/dev/null || true
-	@rm -rf .pytest_cache .coverage htmlcov 2>/dev/null || true
-	@echo "Environment cleaned."
+	docker compose -f $(DEV_COMPOSE) down -v --remove-orphans 2>/dev/null || true
+	docker compose -f $(PROD_COMPOSE) down -v --remove-orphans 2>/dev/null || true
+	docker images -q "api-cost-map-web*" | xargs -r docker rmi -f 2>/dev/null || true
+	docker system prune -f --volumes 2>/dev/null || true
+	sudo rm -f alembic/versions/* 2>/dev/null || true
+	docker builder prune -f 2>/dev/null || true
+	find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+	find . -name "*.pyc" -type f -delete 2>/dev/null || true
+	rm -rf .pytest_cache .coverage htmlcov 2>/dev/null || true

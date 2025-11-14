@@ -101,3 +101,6 @@ __pycache__/
 # Nginx configuration
 nginx/crs/
 nginx/logs/
+
+# alembic
+alembic/versions/*

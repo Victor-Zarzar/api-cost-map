@@ -26,6 +26,10 @@ services:
     command:
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_unicode_ci"
+      - "--log-error=/var/lib/mysql/error.log"
+      - "--log-error-verbosity=1"
+      - "--general-log=0"
+      - "--slow_query_log=0"
 
 volumes:
   db_data:

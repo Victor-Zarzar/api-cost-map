@@ -1,7 +1,7 @@
 import logging.config
 import yaml
 from pathlib import Path
-from app.config.settings import settings
+from app.core.config import settings
 
 
 # Logger main to wrap at the highest level of the application.
