@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
-    TOKEN_URL: str
+    REFRESH_TOKEN_EXPIRE_DAYS: int
 
     # Admin seed
     ADMIN_USERNAME: str
@@ -49,6 +49,10 @@ class Settings(BaseSettings):
     DATABASE_NAME: str
     DATABASE_USER: str
     DATABASE_PASS: str
+
+    # Redis
+    REDIS_LOCATION: str
+    REDIS_PORT: int
 
     # CORS
     ALLOWED_ORIGINS: List[str]

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.costs import CostOfLiving, CostOfLivingCreate
 from app.db.database import get_db
 from app.core.dependencies import get_current_active_user, AdminOnly
@@ -13,19 +13,19 @@ from app.services.cost_service import (
 router = APIRouter()
 
 
-@router.post("/", response_model=CostOfLiving)
-def create_cost(
+@router.post("/costs", response_model=CostOfLiving)
+async def create_cost(
     cost: CostOfLivingCreate,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
     return create_cost_svc(db=db, payload=cost)
 
 
 @router.get("/{cost_id}", response_model=CostOfLiving)
-def read_cost(
+async def read_cost(
     cost_id: int,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
     db_cost = get_cost_svc(db, cost_id=cost_id)
@@ -35,9 +35,9 @@ def read_cost(
 
 
 @router.delete("/{cost_id}")
-def delete_cost(
+async def delete_cost(
     cost_id: int,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(AdminOnly),
 ):
     success = delete_cost_svc(db, cost_id=cost_id)

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import Optional
 from app.models.user import User
-from app.core.security.passwords import hash_password, verify_password
+from app.utils.utils import hash_password, verify_password
 
 
 def get_by_username(db: Session, username: str) -> Optional[User]:

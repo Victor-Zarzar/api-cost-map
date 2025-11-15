@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from app.core.config import settings, logger
 from app.services.user_service import ensure_admin
+from app.utils.utils import get_password_hash
 
 
 def seed_admin(db: Session) -> None:
@@ -8,7 +9,7 @@ def seed_admin(db: Session) -> None:
         admin = ensure_admin(
             db,
             username=settings.ADMIN_USERNAME,
-            password=settings.ADMIN_PASSWORD,
+            password=get_password_hash(settings.ADMIN_PASSWORD),
             full_name=settings.ADMIN_FULL_NAME,
             email=settings.ADMIN_EMAIL,
             disabled=settings.ADMIN_DISABLED,
